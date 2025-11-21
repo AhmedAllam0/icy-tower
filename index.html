@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Icy Tower - Browser Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="ui-overlay">
+            <div class="score-display">
+                <div class="score-label">Score</div>
+                <div class="score-value" id="score">0</div>
+            </div>
+            <div class="high-score-display">
+                <div class="high-score-label">Best</div>
+                <div class="high-score-value" id="highScore">0</div>
+            </div>
+        </div>
+        
+        <canvas id="gameCanvas"></canvas>
+        
+        <div class="start-screen" id="startScreen">
+            <h1 class="game-title">ICY TOWER</h1>
+            <p class="game-subtitle">Jump your way to the top!</p>
+            <button class="start-button" id="startButton">START GAME</button>
+            <div class="controls-info">
+                <p><strong>Desktop:</strong> Arrow Keys or A/D to move, Space/W/Up to jump</p>
+                <p><strong>Mobile:</strong> Touch left/right to move, tap to jump</p>
+            </div>
+        </div>
+        
+        <div class="game-over-screen" id="gameOverScreen">
+            <h2 class="game-over-title">GAME OVER</h2>
+            <div class="final-score">
+                <p>Your Score: <span id="finalScore">0</span></p>
+                <p>Best Score: <span id="finalHighScore">0</span></p>
+            </div>
+            <button class="restart-button" id="restartButton">PLAY AGAIN</button>
+        </div>
+        
+        <!-- Mobile touch controls -->
+        <div class="mobile-controls" id="mobileControls">
+            <button class="control-button left-button" id="leftButton">◄</button>
+            <button class="control-button jump-button" id="jumpButton">JUMP</button>
+            <button class="control-button right-button" id="rightButton">►</button>
+        </div>
+    </div>
+    
+    <script src="game.js"></script>
+</body>
+</html>
