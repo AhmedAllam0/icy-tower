@@ -260,7 +260,15 @@ body {
     }
 }
 
+/* Show mobile controls on touch devices */
 @media (hover: none) and (pointer: coarse) {
+    .mobile-controls {
+        display: flex;
+    }
+}
+
+/* Fallback: Show mobile controls on small screens regardless of pointer type */
+@media (max-width: 768px) {
     .mobile-controls {
         display: flex;
     }

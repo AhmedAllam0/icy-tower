@@ -11,6 +11,8 @@ const CONFIG = {
     PLAYER_HEIGHT: 40,
     CAMERA_OFFSET: 0.4,
     FPS: 60,
+    COLLISION_TOLERANCE: 5,
+    PLATFORM_CLEANUP_BUFFER: 100,
 };
 
 // Game State
@@ -163,16 +165,19 @@ class Game {
         }
         
         // Generate new platforms as player climbs
+        // Start from the highest (lowest y-value) platform and generate new ones above it
         let highestPlatform = Math.min(...this.platforms.map(p => p.y));
         while (highestPlatform > this.cameraY - this.canvas.height) {
             const y = highestPlatform - CONFIG.PLATFORM_GAP;
             const x = Math.random() * (this.canvas.width - CONFIG.PLATFORM_WIDTH);
             this.platforms.push(new Platform(x, y, CONFIG.PLATFORM_WIDTH, CONFIG.PLATFORM_HEIGHT));
-            highestPlatform = y; // Update highestPlatform to prevent infinite loop
+            // Update highestPlatform to the new platform's y position to continue generating upward
+            // This prevents an infinite loop by ensuring progress in each iteration
+            highestPlatform = y;
         }
         
-        // Remove platforms that are below the screen
-        this.platforms = this.platforms.filter(p => p.y < this.cameraY + this.canvas.height + 100);
+        // Remove platforms that are below the visible screen plus a buffer zone
+        this.platforms = this.platforms.filter(p => p.y < this.cameraY + this.canvas.height + CONFIG.PLATFORM_CLEANUP_BUFFER);
         
         // Check if player fell off screen
         if (this.player.y > this.cameraY + this.canvas.height) {
@@ -279,7 +284,8 @@ class Player {
         this.isOnGround = false;
         for (const platform of platforms) {
             if (this.checkCollision(platform)) {
-                if (this.velocityY > 0 && this.y + this.height - this.velocityY <= platform.y + 5) {
+                // Check if player is landing on top of platform (falling down and was above it in previous frame)
+                if (this.velocityY > 0 && this.y + this.height - this.velocityY <= platform.y + CONFIG.COLLISION_TOLERANCE) {
                     this.y = platform.y - this.height;
                     this.velocityY = 0;
                     this.isOnGround = true;
